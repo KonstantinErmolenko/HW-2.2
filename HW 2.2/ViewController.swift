@@ -64,7 +64,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func redSliderChanged() {
-        redSlider.value = (redSlider.value * 100).rounded() / 100
+        redSlider.value = getRoundedValue(redSlider.value)
         redComponent = CGFloat(redSlider.value)
         
         let textValue = numberFormatter.string(from: NSNumber(value: redSlider.value))
@@ -75,7 +75,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func greenSliderChanged() {
-        greenSlider.value = (greenSlider.value * 100).rounded() / 100
+        greenSlider.value = getRoundedValue(greenSlider.value)
         greenValueLabel.text = numberFormatter.string(from: NSNumber(value: greenSlider.value))
         
         greenComponent = CGFloat(greenSlider.value)
@@ -83,12 +83,15 @@ class ViewController: UIViewController {
     }
     
     @IBAction func blueSliderChanged() {
-        blueSlider.value = (blueSlider.value * 100).rounded() / 100
+        blueSlider.value = getRoundedValue(blueSlider.value)
         blueValueLabel.text = numberFormatter.string(from: NSNumber(value: blueSlider.value))
         
         blueComponent = CGFloat(blueSlider.value)
         setViewColor()
     }
     
+    func getRoundedValue(_ value: Float) -> Float {
+        return (value * 100).rounded() / 100
+    }
 }
 
