@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    // MARK: - IB
+    // MARK: - IB Outlets
     @IBOutlet var colorView: UIView!
     
     @IBOutlet var redValueLabel: UILabel!
@@ -24,27 +24,15 @@ class ViewController: UIViewController {
     @IBOutlet var blueValueLabel: UILabel!
     @IBOutlet var blueSlider: UISlider!
     @IBOutlet var blueValueField: UITextField!
-        
+
+    // MARK: - IB Private Properties
     private var redComponent: CGFloat = CGFloat(1.0)
     private var greenComponent: CGFloat = CGFloat(1.0)
     private var blueComponent: CGFloat = CGFloat(1.0)
     
-    let numberFormatter = NumberFormatter()
+    private let numberFormatter = NumberFormatter()
     
-    fileprivate func setInitialComponentValues() {
-        var textValue = numberFormatter.string(from: NSNumber(value: redSlider.value))
-        redValueLabel.text = textValue
-        redValueField.text = textValue
-        
-        textValue = numberFormatter.string(from: NSNumber(value: greenSlider.value))
-        greenValueLabel.text = textValue
-        greenValueField.text = textValue
-        
-        textValue = numberFormatter.string(from: NSNumber(value: blueSlider.value))
-        blueValueLabel.text = textValue
-        blueValueField.text = textValue
-    }
-    
+    // MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -58,33 +46,13 @@ class ViewController: UIViewController {
         blueValueField.delegate = self
     }
     
-    func setupTextFields() {
-        let toolbar = UIToolbar(frame: CGRect(origin: .zero, size: .init(width: view.frame.size.width, height: 30)))
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneBtn = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonAction))
-        
-        toolbar.setItems([flexSpace, doneBtn], animated: false)
-        toolbar.sizeToFit()
-        
-        redValueField.inputAccessoryView = toolbar
-        greenValueField.inputAccessoryView = toolbar
-        blueValueField.inputAccessoryView = toolbar
-    }
-
-    @objc func doneButtonAction() {
-        self.view.endEditing(true)
-    }
-    
     override func viewWillLayoutSubviews() {
         colorView.layer.cornerRadius = 15
         setViewColor()
         setupTextFields()
     }
     
-    func setViewColor() {
-        colorView.backgroundColor = UIColor(red: redComponent, green: greenComponent, blue: blueComponent, alpha: CGFloat(1.0))
-    }
-    
+    // MARK: - IB Actions
     @IBAction func redSliderChanged() {
         redSlider.value = getRoundedValue(redSlider.value)
         redComponent = CGFloat(redSlider.value)
@@ -118,8 +86,49 @@ class ViewController: UIViewController {
         setViewColor()
     }
     
-    func getRoundedValue(_ value: Float) -> Float {
+    // MARK: - Private Methods
+    fileprivate func setInitialComponentValues() {
+        var textValue = numberFormatter.string(from: NSNumber(value: redSlider.value))
+        redValueLabel.text = textValue
+        redValueField.text = textValue
+        
+        textValue = numberFormatter.string(from: NSNumber(value: greenSlider.value))
+        greenValueLabel.text = textValue
+        greenValueField.text = textValue
+        
+        textValue = numberFormatter.string(from: NSNumber(value: blueSlider.value))
+        blueValueLabel.text = textValue
+        blueValueField.text = textValue
+        
+        redSlider.minimumTrackTintColor = .red
+        greenSlider.minimumTrackTintColor = .green
+        blueSlider.minimumTrackTintColor = .blue
+    }
+    
+    fileprivate func setupTextFields() {
+        let toolbar = UIToolbar(frame: CGRect(origin: .zero, size: .init(width: view.frame.size.width, height: 30)))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneBtn = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonAction))
+        
+        toolbar.setItems([flexSpace, doneBtn], animated: false)
+        toolbar.sizeToFit()
+        
+        redValueField.inputAccessoryView = toolbar
+        greenValueField.inputAccessoryView = toolbar
+        blueValueField.inputAccessoryView = toolbar
+    }
+    
+    fileprivate func setViewColor() {
+        colorView.backgroundColor = UIColor(red: redComponent, green: greenComponent, blue: blueComponent, alpha: CGFloat(1.0))
+    }
+
+    fileprivate func getRoundedValue(_ value: Float) -> Float {
         return (value * 100).rounded() / 100
+    }
+    
+    // MARK: - Delegate Methods
+    @objc func doneButtonAction() {
+        self.view.endEditing(true)
     }
 }
 
