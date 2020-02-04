@@ -52,6 +52,11 @@ class ViewController: UIViewController {
         setupTextFields()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+        super.touchesBegan(touches, with: event)
+    }
+    
     // MARK: - IB Actions
     @IBAction func redSliderChanged() {
         redSlider.value = getRoundedValue(redSlider.value)
